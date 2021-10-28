@@ -10,7 +10,7 @@ Run the project
 # TO DO
 Routes
 
-MongoDB (mongoose) interactions (and link for your cluster)
+MongoDB (mongoose) interactions (remember to change the server either to a local or a cluster of your own)
 
 Tests for developed features (back-end and/or front-end)
 

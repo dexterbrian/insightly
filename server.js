@@ -6,7 +6,7 @@ const routes = require('./src/routes');
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
-//Edit bellow the mongodb cluster link
+// Change the server for a local or a cluster of your own
 const server =
   'mongodb+srv://candidate:interview@interview.usfbr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
