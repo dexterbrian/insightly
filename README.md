@@ -21,7 +21,7 @@ You're part of a developer team in a company that we're hired by an University t
 
 This software will be assisting the professors that use distant learning.
 
-At first you we're asked to do a more simpler task, to make it possible for anyone who access the software to have the possibility to create a test/exam with a max of 15 questions, each one with a value between 0.25 and 1 (but always having a maximum of 10 per test/exam), and with up to four answers each.
+At first you we're asked to do a more simpler task, to make it possible for anyone who access the software to have the possibility to create a test/exam with a max of 15 questions with a yes or no answer, each one with a value between 0.25 and 1 (but always having a maximum of 10 per test/exam).
 
 So your team leader give you the tasks to develop:
 - All the necessary routes for the API.
