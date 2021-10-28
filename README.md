@@ -22,4 +22,5 @@ So your team leader give you the tasks to develop:
  
 Observations:
 It is important that the candidate send the solution before the end of the time even if the solution isn’t entirely finished.
+
 It is the choice of the candidate if it wants to connect to a local database or a cluster on MongoDB Atlas.
