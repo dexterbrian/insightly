@@ -1,15 +1,15 @@
-const express = require('express');
+import express from 'express';
+import mongoose from 'mongoose';
+import routes from './src/routes.js';
+import dotenv from 'dotenv';
+dotenv.config();
+
 const app = express();
-const mongoose = require('mongoose');
-const routes = require('./src/routes');
-require('dotenv').config();
 
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 
-// Change the server for a local or a cluster of your own
-const server =
-  `mongodb+srv://${process.env.DB_USER}:${encodeURIComponent(process.env.DB_PASSWORD)}@insightlycluster0.jupd9.mongodb.net/insightly?retryWrites=true&w=majority&appName=InsightlyCluster0`;
+const server = `mongodb+srv://${process.env.DB_USER}:${encodeURIComponent(process.env.DB_PASSWORD)}@insightlycluster0.jupd9.mongodb.net/insightly?retryWrites=true&w=majority&appName=InsightlyCluster0`;
 
 app.use('/', routes);
 
@@ -20,11 +20,10 @@ app.listen(port, () => {
 });
 
 mongoose.connect(server, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
   .then(() => {
     console.log('Database connected');
   })
   .catch((err) => console.log(err));
-
