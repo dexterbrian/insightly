@@ -19,20 +19,25 @@ export const createQuestionnaire = async (req, res) => {
   }
 };
 
-export const getQuestionnaire = async (req, res) => {
+export const getQuestionnaireViaApi = async (req, res) => {
   try {
     const { id } = req.params; // Get the id of the specific questionnaire
-    const questionnaire = await Questionnaire.findById(id);
 
-    // Get the questions for this specific questionnaire
-    const questions = await Question.find({ questionnaire_id: id });
-
-    res.status(200).json({ questionnaire, questions });
+    res.status(200).json(await getQuestionnaire(id));
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Error getting questionnaire' });
   }
 };
+
+const getQuestionnaire = async (id) => {
+  const questionnaire = await Questionnaire.findById(id);
+
+  // Get the questions for this specific questionnaire
+  const questions = await Question.find({ questionnaire_id: id });
+
+  return { questionnaire, questions };
+}
 
 export const submitQuestionnaireResponses = async (req, res) => {
   try {
@@ -40,9 +45,39 @@ export const submitQuestionnaireResponses = async (req, res) => {
     let responses = req.body;
     responses = responses.map(response => ({ questionnaire_id, ...response }));
     const submittedResponses = await Response.insertMany(responses);
-    res.status(200).json({ submittedResponses });
+
+    // TODO return the score instead of submittedResponses
+    const score = getScore(submittedResponses, questionnaire_id);
+    
+    res.status(200).json({ score: score, submittedResponses });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Error submitting responses' });
   }
 }
+
+  /**
+   * Calculates the score for a set of submitted responses
+   * @param {Response[]} submittedResponses - Array of submitted responses
+   * @param {string} questionnaire_id - The id of the questionnaire
+   * @returns {Promise<number>} The score as a percentage
+   */
+const getScore = async(submittedResponses, questionnaire_id) => {
+
+  const questionnaire = await getQuestionnaire(questionnaire_id);
+  const totalWeight = questionnaire.questions.reduce((total, question) => total + question.weight, 0);
+  
+  const scoreTally = submittedResponses.reduce((total, response) => {
+    const question = questionnaire.questions.find(question => question._id.toString() === response.question_id);
+    console.log('question: ', questionnaire.questions);
+    return response.choice === question.answer ? total + question.weight : total + 0;
+  }, 0);
+
+  return Math.round((scoreTally / totalWeight) * 100);
+};
+
+// TODO Update Questionnaire
+
+// TODO Delete Questionnaire
+
+// TODO Delete a Question in a Questionnaire
