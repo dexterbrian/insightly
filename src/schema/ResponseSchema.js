@@ -1,14 +1,14 @@
-import { mongoose } from "mongoose";
+import pkg from "mongoose";
 
-const { Schema } = mongoose;
+const { Schema } = pkg;
 
 const responseSchema = new Schema({
     question_id: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true
     },
     questionnaire_id: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true
     },
     choice: {
