@@ -11,8 +11,8 @@ const responseSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true
     },
-    choice_id: {
-        type: mongoose.Schema.Types.ObjectId,
+    choice: {
+        type: String,
         required: true
     },
     respondent: {
