@@ -1,0 +1,38 @@
+# Node.js and npm files
+node_modules/
+package-lock.json
+
+# Environment variables
+.env
+
+# IDE and editor files
+.vscode/
+.idea/
+.editorconfig
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Log files
+logs/
+*.log
+
+# Temporary files
+tmp/
+*.tmp
+
+# Build and compiled files
+build/
+dist/
+*.js.map
+
+# Other files
+coverage/
+*.seed
+*.pid
+*.sock
+*.lock
+*.exe
+*.dll
+*.pdb
