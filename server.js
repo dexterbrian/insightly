@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import routes from './src/routes.js';
+import webRouters from './src/routes/web.js';
+import apiRouters from './src/routes/api.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -11,7 +12,8 @@ app.use(express.urlencoded({ extended: true }));
 
 const server = `mongodb+srv://${process.env.DB_USER}:${encodeURIComponent(process.env.DB_PASSWORD)}@insightlycluster0.jupd9.mongodb.net/insightly?retryWrites=true&w=majority&appName=InsightlyCluster0`;
 
-app.use('/', routes);
+app.use('/', webRouters);
+app.use('/api', apiRouters);
 
 const port = process.env.PORT;
 
