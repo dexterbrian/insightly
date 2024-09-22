@@ -1,5 +1,6 @@
 import Questionnaire from "../models/QuestionnairesModel.js";
 import Question from "../models/QuestionsModel.js";
+import Response from "../models/ResponsesModel.js";
 
 export const createQuestionnaire = async (req, res) => {
   try {
@@ -20,7 +21,7 @@ export const createQuestionnaire = async (req, res) => {
 
 export const getQuestionnaire = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params; // Get the id of the specific questionnaire
     const questionnaire = await Questionnaire.findById(id);
 
     // Get the questions for this specific questionnaire
@@ -32,3 +33,16 @@ export const getQuestionnaire = async (req, res) => {
     res.status(500).json({ message: 'Error getting questionnaire' });
   }
 };
+
+export const submitQuestionnaireResponses = async (req, res) => {
+  try {
+    const { id: questionnaire_id } = req.params; // Get the id of the specific questionnaire
+    let responses = req.body;
+    responses = responses.map(response => ({ questionnaire_id, ...response }));
+    const submittedResponses = await Response.insertMany(responses);
+    res.status(200).json({ submittedResponses });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Error submitting responses' });
+  }
+}
