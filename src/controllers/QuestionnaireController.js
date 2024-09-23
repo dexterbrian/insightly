@@ -77,6 +77,20 @@ const getScore = async(submittedResponses, questionnaire_id) => {
 };
 
 // TODO Update Questionnaire
+export const updateQuestionnaire =  async (req, res) => {
+  try {
+    const { id: questionnaire_id } = req.params; // Get the id of the specific questionnaire
+    const { creator, title, questions } = req.body;
+
+    const updatedQuestionnaire = await Questionnaire.findByIdAndUpdate(questionnaire_id, { creator, title, questions }, { new: true });
+    console.log(updatedQuestionnaire);
+    
+    res.status(200).json({ updatedQuestionnaire });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Error updating questionnaire' });
+  }
+};
 
 // TODO Delete Questionnaire
 
