@@ -58,7 +58,7 @@ export const submitQuestionnaireResponses = async (req, res) => {
 
   /**
    * Calculates the score for a set of submitted responses
-   * @param {Response[]} submittedResponses - Array of submitted responses
+   * @param {[{question_id: string, questionnaire_id: string, choice: string, respondent: string, _id: string, createdAt: string, updatedAt: string, __v: 0}]} submittedResponses - Array of submitted responses
    * @param {string} questionnaire_id - The id of the questionnaire
    * @returns {Promise<number>} The score as a percentage
    */
