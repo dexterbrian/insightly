@@ -7,6 +7,29 @@ Install the packages
 
 Run the project
 
+Sample data for creating or updating a questionnaire:
+
+```
+{
+  "creator": "Dexter",
+  "title": "Dexter's Questionnaire",
+  "questions": [
+    {
+      "question": "What is 1+1",
+      "choices": ["2", "3", "11"],
+      "answer": "2",
+      "weight": 1
+    },
+    {
+      "question": "What is 10+1",
+      "choices": ["11", "3", "101"],
+      "answer": "11",
+      "weight": 1
+    }
+  ]
+}
+```
+
 # Context
 You're part of a development team for a company that was hired by the University to create a specific software that will assist distant learning professors.
 At first, your team was requested to do the following task: to make it possible for anyone who accesses the software to be able to create a questionnaire, where each question contains:
