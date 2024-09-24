@@ -77,15 +77,28 @@ const getScore = async(submittedResponses, questionnaire_id) => {
 };
 
 // TODO Update Questionnaire
-export const updateQuestionnaire =  async (req, res) => {
+export const updateQuestionnaire = async (req, res) => {
   try {
     const { id: questionnaire_id } = req.params; // Get the id of the specific questionnaire
     const { creator, title, questions } = req.body;
 
-    const updatedQuestionnaire = await Questionnaire.findByIdAndUpdate(questionnaire_id, { creator, title, questions }, { new: true });
+    const updatedQuestionnaire = await Questionnaire.findByIdAndUpdate(questionnaire_id, { creator, title }, { new: true });
     console.log(updatedQuestionnaire);
+
+    const newQuestions = questions.map(question => ({ questionnaire_id: updatedQuestionnaire._id, ...question }));
+    console.log('newQuestions: ', newQuestions);
+
+    const updates = newQuestions.map(question => ({
+      updateOne: {
+        filter: { questionnaire_id: questionnaire_id },
+        update: { $set: question }
+      }
+    }));
     
-    res.status(200).json({ updatedQuestionnaire });
+    const result = await Question.bulkWrite(updates);
+    console.log(result);
+
+    res.status(200).json({ result: result.ok });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Error updating questionnaire' });
