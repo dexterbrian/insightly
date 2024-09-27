@@ -62,14 +62,19 @@
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <script>
+    <script type="text/javascript">
+
+        var questionArea = document.getElementById('questionsArea'),
+            lastQuestionIndex = 0;
+
         $(document).ready(function() {
             // Find out how many questions there are in the questionsArea div
             // Loop through each child element in the questions area and gather the data in the each input element in an object
-            // document.getElementById("questionsArea").children.forEach(question => {
-            //     //console.log(question.children[0].value, question.children[1].value, question.children[2].value, question.children[3].value);
-            //     console.log('yay');
-            // });
+            
+            lastQuestionIndex = getLastQuestionIndex();
+
+            // Store the lastQuestionIndex as 0 in storage
+            localStorage.setItem('lastQuestionIndex', lastQuestionIndex);
 
             let creator = $("#creator").val(),
                 title = $("#title").val()
@@ -83,15 +88,13 @@
             });
 
             console.log('myobject: ', {creator, title});
-            addQuestion();
+            //addQuestion();
         });
         
         function getNumberOfQuestions() {
-            const questionsArea = document.getElementById("questionsArea");
+            questionsArea = document.getElementById("questionsArea");
             return questions.children.length;
         }
-
-
 
         function addChoice() {
             const choices = document.getElementById("choices");
@@ -111,25 +114,45 @@
             choices.removeChild(choices.lastElementChild);
         }
 
+        function getLastQuestionIndex() {
+            questionArea = document.getElementById('questionsArea');
+            const lastQuestion = questionArea.lastElementChild;
+            console.log('lastquestion: ', lastQuestion.id);
+
+            for (i = 0; i < lastQuestion.id.length - 1; i++) {
+                if (!Number.isNaN(lastQuestion.id[i])) {
+                    continue;
+                } else {
+                    lastQuestionIndex = parseInt(lastQuestion.id.slice(i));
+                    break;
+                }
+            }
+            console.log('lastQuestionIndex: ', lastQuestionIndex);
+
+            return lastQuestionIndex;
+        }
+
         function addQuestion() {
-            const originalQuestionDiv = document.getElementById('question0');
-            const clonedQuestionDiv = originalQuestionDiv.cloneNode(true);
 
-            originalQuestionDiv.parentNode.appendChild(clonedQuestionDiv);
+            lastQuestionIndex = localStorage.getItem('lastQuestionIndex');
 
-            // const questionArea = document.getElementById('questionsArea');
-            // const lastQuestion = questionArea.lastElementChild;
-            // console.log('lastquestion: ', lastQuestion.id);
+            lastQuestionIndex = parseInt(lastQuestionIndex) + 1;
+            localStorage.setItem('lastQuestionIndex', lastQuestionIndex);
+            console.log('nextQuestionIndex: ', lastQuestionIndex);
 
-            // Loop through a string checking each character if it is a string or number
+            // Clone the last question, change its id to the nextQuestionIndex and then add it to the questionsArea div
+            const lastQuestion = questionArea.lastElementChild;
+            const nextQuestion = lastQuestion.cloneNode(true);
 
+            // Change the id of nextQuestion
+            nextQuestion.id = 'question' + lastQuestionIndex.toString();
 
-            //clonedQuestion.id = 'question' + getNumberOfQuestions();
+            lastQuestion.parentNode.appendChild(nextQuestion);
         }
 
         function removeQuestion() {
-            const questions = document.getElementById('question0');
-            questions.parentNode.removeChild(questions);
+            const question = questionArea.lastElementChild;
+            question.parentNode.removeChild(question);
         }
 
         /**
