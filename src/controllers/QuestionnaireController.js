@@ -105,6 +105,33 @@ export const updateQuestionnaire = async (req, res) => {
   }
 };
 
-// TODO Delete Questionnaire
+// Delete Questionnaire
+export const deleteQuestionnaire = async (req, res) => {
+  try {
+    const { id: questionnaire_id } = req.params; // Get the id of the specific questionnaire
 
-// TODO Delete a Question in a Questionnaire
+    const deletedQuestionnaire = await Questionnaire.findByIdAndDelete(questionnaire_id);
+    console.log(deletedQuestionnaire);
+
+    res.status(200).json({ result: deletedQuestionnaire });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Error deleting questionnaire' });
+  }
+}
+
+// Delete a Question in a Questionnaire
+export const deleteQuestion = async (req, res) => {
+  try {
+    const { id: question_id } = req.params; // Get the id of the specific question
+    //const { id: questionnaire_id } = req.params; // Get the id of the specific questionnaire
+
+    const deletedQuestion = await Question.findByIdAndDelete(question_id);
+    console.log(deletedQuestion);
+
+    res.status(200).json({ result: deletedQuestion });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Error deleting question' });
+  }
+}
