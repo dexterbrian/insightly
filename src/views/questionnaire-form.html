@@ -66,10 +66,10 @@
         $(document).ready(function() {
             // Find out how many questions there are in the questionsArea div
             // Loop through each child element in the questions area and gather the data in the each input element in an object
-            document.getElementById("questionsArea").children.forEach(question => {
-                //console.log(question.children[0].value, question.children[1].value, question.children[2].value, question.children[3].value);
-                console.log('yay');
-            });
+            // document.getElementById("questionsArea").children.forEach(question => {
+            //     //console.log(question.children[0].value, question.children[1].value, question.children[2].value, question.children[3].value);
+            //     console.log('yay');
+            // });
 
             let creator = $("#creator").val(),
                 title = $("#title").val()
@@ -83,6 +83,7 @@
             });
 
             console.log('myobject: ', {creator, title});
+            addQuestion();
         });
         
         function getNumberOfQuestions() {
@@ -111,14 +112,23 @@
         }
 
         function addQuestion() {
-            const originalQuestionDiv = document.getElementById('questions');
+            const originalQuestionDiv = document.getElementById('question0');
             const clonedQuestionDiv = originalQuestionDiv.cloneNode(true);
 
             originalQuestionDiv.parentNode.appendChild(clonedQuestionDiv);
+
+            // const questionArea = document.getElementById('questionsArea');
+            // const lastQuestion = questionArea.lastElementChild;
+            // console.log('lastquestion: ', lastQuestion.id);
+
+            // Loop through a string checking each character if it is a string or number
+
+
+            //clonedQuestion.id = 'question' + getNumberOfQuestions();
         }
 
         function removeQuestion() {
-            const questions = document.getElementById('questions');
+            const questions = document.getElementById('question0');
             questions.parentNode.removeChild(questions);
         }
 
