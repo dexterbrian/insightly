@@ -5,7 +5,7 @@ import { mydirname } from '../config.js';
 const webRouter = express.Router();
 
 webRouter.get('/', async (req, res) => {
-  res.send('<h1>Hello world</h1>');
+  res.sendFile(mydirname + '/index.html');
 });
 
 // Example post
