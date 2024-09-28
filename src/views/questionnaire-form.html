@@ -25,7 +25,7 @@
         </div>
 
         <div id="questionsArea">
-            <div id="questions">
+            <div id="question0">
                 <div class="mb-5">
                     <label for="question" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Question</label>
                     <input type="text" id="question" name="question" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="What is 1 + 1?" required />
@@ -44,9 +44,9 @@
                 <div class="mb-5">
                     <label for="choices" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Multiple Choices</label>
                     <div id="choices">
-                        <input type="text" name="choices[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-3" placeholder="Type in a choice" required />
-                        <input type="text" name="choices[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-3" placeholder="Type in a choice" required />
-                        <input type="text" name="choices[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-3" placeholder="Type in a choice" required />
+                        <input type="text" id="choice0" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-3" placeholder="Type in a choice" required />
+                        <input type="text" id="choice1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-3" placeholder="Type in a choice" required />
+                        <input type="text" id="choice2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-3" placeholder="Type in a choice" required />
                     </div>
                     <button type="button" onclick="addChoice()" class="py-2.5 px-5 me-2 mt-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Add a choice</button>
                     <button type="button" onclick="removeChoice()" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Remove Choice</button>
@@ -60,8 +60,42 @@
     </form>
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <script>
+    <script type="text/javascript">
+
+        var questionArea = document.getElementById('questionsArea'),
+            lastQuestionIndex = 0;
+
+        $(document).ready(function() {
+            // Find out how many questions there are in the questionsArea div
+            // Loop through each child element in the questions area and gather the data in the each input element in an object
+            
+            lastQuestionIndex = getLastQuestionIndex();
+
+            // Store the lastQuestionIndex as 0 in storage
+            localStorage.setItem('lastQuestionIndex', lastQuestionIndex);
+
+            let creator = $("#creator").val(),
+                title = $("#title").val()
+            ;
+
+            $('#creator').on('input', function() {
+                creator = $(this).val();
+            });
+            $('#title').on('input', function() {
+                title = $(this).val();
+            });
+
+            console.log('myobject: ', {creator, title});
+            //addQuestion();
+        });
+        
+        function getNumberOfQuestions() {
+            questionsArea = document.getElementById("questionsArea");
+            return questions.children.length;
+        }
+
         function addChoice() {
             const choices = document.getElementById("choices");
             let choice = document.createElement("input");
@@ -80,16 +114,45 @@
             choices.removeChild(choices.lastElementChild);
         }
 
-        function addQuestion() {
-            const originalQuestionDiv = document.getElementById('questions');
-            const clonedQuestionDiv = originalQuestionDiv.cloneNode(true);
+        function getLastQuestionIndex() {
+            questionArea = document.getElementById('questionsArea');
+            const lastQuestion = questionArea.lastElementChild;
+            console.log('lastquestion: ', lastQuestion.id);
 
-            originalQuestionDiv.parentNode.appendChild(clonedQuestionDiv);
+            for (i = 0; i < lastQuestion.id.length - 1; i++) {
+                if (!Number.isNaN(lastQuestion.id[i])) {
+                    continue;
+                } else {
+                    lastQuestionIndex = parseInt(lastQuestion.id.slice(i));
+                    break;
+                }
+            }
+            console.log('lastQuestionIndex: ', lastQuestionIndex);
+
+            return lastQuestionIndex;
+        }
+
+        function addQuestion() {
+
+            lastQuestionIndex = localStorage.getItem('lastQuestionIndex');
+
+            lastQuestionIndex = parseInt(lastQuestionIndex) + 1;
+            localStorage.setItem('lastQuestionIndex', lastQuestionIndex);
+            console.log('nextQuestionIndex: ', lastQuestionIndex);
+
+            // Clone the last question, change its id to the nextQuestionIndex and then add it to the questionsArea div
+            const lastQuestion = questionArea.lastElementChild;
+            const nextQuestion = lastQuestion.cloneNode(true);
+
+            // Change the id of nextQuestion
+            nextQuestion.id = 'question' + lastQuestionIndex.toString();
+
+            lastQuestion.parentNode.appendChild(nextQuestion);
         }
 
         function removeQuestion() {
-            const questions = document.getElementById('questions');
-            questions.parentNode.removeChild(questions);
+            const question = questionArea.lastElementChild;
+            question.parentNode.removeChild(question);
         }
 
         /**

@@ -77,21 +77,61 @@ const getScore = async(submittedResponses, questionnaire_id) => {
 };
 
 // TODO Update Questionnaire
-export const updateQuestionnaire =  async (req, res) => {
+export const updateQuestionnaire = async (req, res) => {
   try {
     const { id: questionnaire_id } = req.params; // Get the id of the specific questionnaire
     const { creator, title, questions } = req.body;
 
-    const updatedQuestionnaire = await Questionnaire.findByIdAndUpdate(questionnaire_id, { creator, title, questions }, { new: true });
+    const updatedQuestionnaire = await Questionnaire.findByIdAndUpdate(questionnaire_id, { creator, title }, { new: true });
     console.log(updatedQuestionnaire);
+
+    const newQuestions = questions.map(question => ({ questionnaire_id: updatedQuestionnaire._id, ...question }));
+    console.log('newQuestions: ', newQuestions);
+
+    const updates = newQuestions.map(question => ({
+      updateOne: {
+        filter: { questionnaire_id: questionnaire_id },
+        update: { $set: question }
+      }
+    }));
     
-    res.status(200).json({ updatedQuestionnaire });
+    const result = await Question.bulkWrite(updates);
+    console.log(result);
+
+    res.status(200).json({ result: result.ok });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Error updating questionnaire' });
   }
 };
 
-// TODO Delete Questionnaire
+// Delete Questionnaire
+export const deleteQuestionnaire = async (req, res) => {
+  try {
+    const { id: questionnaire_id } = req.params; // Get the id of the specific questionnaire
 
-// TODO Delete a Question in a Questionnaire
+    const deletedQuestionnaire = await Questionnaire.findByIdAndDelete(questionnaire_id);
+    console.log(deletedQuestionnaire);
+
+    res.status(200).json({ result: deletedQuestionnaire });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Error deleting questionnaire' });
+  }
+}
+
+// Delete a Question in a Questionnaire
+export const deleteQuestion = async (req, res) => {
+  try {
+    const { id: question_id } = req.params; // Get the id of the specific question
+    //const { id: questionnaire_id } = req.params; // Get the id of the specific questionnaire
+
+    const deletedQuestion = await Question.findByIdAndDelete(question_id);
+    console.log(deletedQuestion);
+
+    res.status(200).json({ result: deletedQuestion });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Error deleting question' });
+  }
+}
