@@ -25,7 +25,7 @@ webRouter.get('/output.css', async (req, res) => {
   res.sendFile(mydirname + '/output.css');
 })
 
-webRouter.get('/questionnaire/create', async (req, res) => {
+webRouter.get('/questionnaires/create', async (req, res) => {
   res.sendFile(mydirname + '/views/questionnaire-form.html');
 });
 
