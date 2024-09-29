@@ -39,6 +39,16 @@ const getQuestionnaire = async (id) => {
   return { questionnaire, questions };
 }
 
+export const getQuestionnaires = async (req, res) => {
+  try {
+    const questionnaires = await Questionnaire.find();
+    res.status(200).json(questionnaires);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Error getting questionnaires' });
+  }
+}
+
 export const submitQuestionnaireResponses = async (req, res) => {
   try {
     const { id: questionnaire_id } = req.params; // Get the id of the specific questionnaire

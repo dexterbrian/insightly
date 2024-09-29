@@ -1,13 +1,16 @@
 import express from 'express';
-import { createQuestionnaire, getQuestionnaireViaApi, updateQuestionnaire, submitQuestionnaireResponses, deleteQuestionnaire, deleteQuestion } from '../controllers/QuestionnaireController.js';
+import { createQuestionnaire, getQuestionnaireViaApi, getQuestionnaires, updateQuestionnaire, submitQuestionnaireResponses, deleteQuestionnaire, deleteQuestion } from '../controllers/QuestionnaireController.js';
 
 const apiRouter = express.Router();
 
 // Create Questionnaire
 apiRouter.post('/questionnaires', (req, res) => createQuestionnaire(req, res));
 
-// Get Questionnaire
+// Get Specific Questionnaire
 apiRouter.get('/questionnaires/:id', (req, res) => getQuestionnaireViaApi(req, res));
+
+// Get All Questionnaires
+apiRouter.get('/questionnaires', (req, res) => getQuestionnaires(req, res));
 
 // Update Questionnaire
 apiRouter.put('/questionnaires/:id', (req, res) => updateQuestionnaire(req, res));
