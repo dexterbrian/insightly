@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Set CORS policy
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : 'https://insightly-next-app.vercel.app', // allow requests from this origin
+  origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : 'https://insightly-seven.vercel.app/', // allow requests from this origin
   methods: 'GET,HEAD,OPTIONS,PUT,DELETE', // allow these methods
   preflightContinue: false, // handle preflight requests
   optionsSuccessStatus: 200, // return 200 for successful preflight requests
