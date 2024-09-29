@@ -15,8 +15,10 @@ app.use(express.urlencoded({ extended: true }));
 const corsOptions = {
   origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : 'https://insightly-seven.vercel.app', // allow requests from this origin
   methods: 'GET,HEAD,OPTIONS,PUT,DELETE', // allow these methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // allow these headers
   preflightContinue: false, // handle preflight requests
   optionsSuccessStatus: 200, // return 200 for successful preflight requests
+  credentials: true, // allow credentials (e.g., cookies)
 };
 
 app.use(cors(corsOptions));
